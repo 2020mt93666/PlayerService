@@ -10,13 +10,7 @@ exports.create = async (req, res, next) => {
     });
     return;
   }
-
-  Name
-Type
-Team
-Runs
-Wickets
-Catches
+  
   // Create a player
   const player = new PlayerModel({
     name: req.body.name,
@@ -42,15 +36,20 @@ Catches
 exports.findAll = async (req, res) => {
   const name = req.query.name;
   var condition = name ? {
-    name: {
-      $regex: new RegExp(name),
-      $options: "i"
-    }
+    name: name
   } : {};
 
   try {
-    const data = await PlayerModel.find(condition);
-    res.send(data);
+    if(name)
+    {
+      const data = await PlayerModel.findOne(condition);
+      res.send(data);
+    }
+    else
+    {
+      const data = await PlayerModel.find(condition);
+      res.send(data);
+    }    
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occurred while retrieving players."
