@@ -4,18 +4,27 @@ const PlayerModel = db.players;
 // Create and Save a new player
 exports.create = async (req, res, next) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.name) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
 
+  Name
+Type
+Team
+Runs
+Wickets
+Catches
   // Create a player
   const player = new PlayerModel({
-    title: req.body.title,
-    description: req.body.description,
-    published: req.body.published ? req.body.published : false
+    name: req.body.name,
+    type: req.body.type,
+    team: req.body.team,
+    runs: req.body.runs,
+    wickets: req.body.wickets,
+    catches: req.body.catches
   });
 
   try {
@@ -31,10 +40,10 @@ exports.create = async (req, res, next) => {
 
 // Retrieve all players from the database.
 exports.findAll = async (req, res) => {
-  const title = req.query.title;
-  var condition = title ? {
-    title: {
-      $regex: new RegExp(title),
+  const name = req.query.name;
+  var condition = name ? {
+    name: {
+      $regex: new RegExp(name),
       $options: "i"
     }
   } : {};
